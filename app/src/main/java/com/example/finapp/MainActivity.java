@@ -47,12 +47,17 @@ public class MainActivity extends AppCompatActivity {
             if (tab != null) {
                 TextView tabTextView = new TextView(this);
                 tab.setCustomView(tabTextView);
-                tabTextView.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 tabTextView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
                 tabTextView.setText(tab.getText());
+                tabTextView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
                 if (i == 0) {
-                    tabTextView.getLayoutParams().width = dpToPx(116, getApplicationContext());
                     tabTextView.setTextSize(28);
+                    tabTextView.getLayoutParams().width = dpToPx(116, getApplicationContext());
+                } else {
+                    tabTextView.setTextSize(18);
+                    tabTextView.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondaryText));
+                    tabTextView.getLayoutParams().width = dpToPx(130, getApplicationContext());
+                    tabTextView.setPadding(4, 0, 0, 0);
                 }
             }
         }
@@ -67,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                     if (tabViewChild instanceof TextView) {
                         ((TextView) tabViewChild).setTextSize(28);
                         ((TextView) tabViewChild).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryText));
-                        tabViewChild.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     }
                 }
             }
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     if (tabViewChild instanceof TextView) {
                         ((TextView) tabViewChild).setTextSize(18);
                         ((TextView) tabViewChild).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondaryText));
-                        tabViewChild.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        //tabViewChild.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     }
                 }
             }
