@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.viewpager.widget.ViewPager;
 import com.example.finapp.ui.main.SectionsPagerAdapter;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -36,9 +37,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
 
+        NestedScrollView scrollView = findViewById(R.id.nest_scrollview);
+        scrollView.setFillViewport(true);
+
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        // Получаем ViewPager и устанавливаем в него адаптер
         ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setAdapter(
+                new SectionsPagerAdapter(MainActivity.this, getSupportFragmentManager()));
+
+        // Передаём ViewPager в TabLayout
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
