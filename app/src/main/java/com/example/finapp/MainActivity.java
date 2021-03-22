@@ -10,7 +10,10 @@ import android.widget.TextView;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import com.example.finapp.ui.main.FragmentOne;
+import com.example.finapp.ui.main.FragmentTwo;
 import com.example.finapp.ui.main.SectionsPagerAdapter;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +24,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
@@ -40,11 +46,16 @@ public class MainActivity extends AppCompatActivity {
         NestedScrollView scrollView = findViewById(R.id.nest_scrollview);
         scrollView.setFillViewport(true);
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        List<Class> fragmentTypes = new ArrayList<Class>() {{
+            add(FragmentOne.class);
+            add(FragmentTwo.class);
+        }};
+
+        FragmentPagerAdapter adapter =
+                new SectionsPagerAdapter(getSupportFragmentManager(), fragmentTypes, this);
         // Получаем ViewPager и устанавливаем в него адаптер
         ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(
-                new SectionsPagerAdapter(MainActivity.this, getSupportFragmentManager()));
+        viewPager.setAdapter(adapter);
 
         // Передаём ViewPager в TabLayout
         tabLayout = findViewById(R.id.tabs);

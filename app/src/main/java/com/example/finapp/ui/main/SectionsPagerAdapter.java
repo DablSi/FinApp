@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.finapp.R;
 
+import java.util.List;
+
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
@@ -18,16 +20,46 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    private List<Class> mFragmentTypes;
+
+    public SectionsPagerAdapter(
+            FragmentManager fm,
+            List<Class> fragmentTypes,
+            Context mContext) {
         super(fm);
-        mContext = context;
+        this.mContext = mContext;
+        this.mFragmentTypes = fragmentTypes;
+    }
+
+    @Override
+    public int getCount() {
+
+        if (mFragmentTypes != null) {
+            return mFragmentTypes.size();
+        }
+
+        return 0;
     }
 
     @Override
     public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+
+        Fragment fragment = null;
+
+        if (mFragmentTypes != null &&
+                position >= 0 &&
+                position < mFragmentTypes.size()) {
+
+            Class c = mFragmentTypes.get(position);
+
+            try {
+                fragment = (Fragment) Class.forName(c.getName()).newInstance();
+            } catch (Exception ex) {
+                // TODO: log the error
+            }
+        }
+
+        return fragment;
     }
 
     @Nullable
@@ -36,9 +68,4 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return mContext.getResources().getString(TAB_TITLES[position]);
     }
 
-    @Override
-    public int getCount() {
-        // Show 2 total pages.
-        return 2;
-    }
 }
