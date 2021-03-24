@@ -7,4 +7,5 @@
     <color name="colorAccent">#BABABA</color>
     <color name="colorPrimaryText">#1A1A1A</color>
     <color name="colorSecondaryText">#BABABA</color>
+    <color name="cardBackground">#F0F4F7</color>
 </resources>
