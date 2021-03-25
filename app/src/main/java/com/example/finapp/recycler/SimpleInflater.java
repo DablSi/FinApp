@@ -1,4 +1,4 @@
-package com.example.finapp;
+package com.example.finapp.recycler;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.example.finapp.Toolbox;
 
 /**
  * Simple wrapper class for {@link LayoutInflater}.

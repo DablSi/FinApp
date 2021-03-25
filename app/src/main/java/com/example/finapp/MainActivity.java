@@ -24,7 +24,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

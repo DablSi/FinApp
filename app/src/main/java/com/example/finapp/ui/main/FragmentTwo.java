@@ -17,8 +17,8 @@ public class FragmentTwo extends Fragment {
             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText("Hello from " + this.getClass().getSimpleName());
+//        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//        textView.setText("Hello from " + this.getClass().getSimpleName());
         return rootView;
     }
 }

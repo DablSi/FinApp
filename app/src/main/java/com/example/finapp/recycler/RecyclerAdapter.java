@@ -1,4 +1,4 @@
-package com.example.finapp;
+package com.example.finapp.recycler;
 
 import android.content.Context;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.finapp.R;
 
 /**
  * This is an extension of Recycler view adapter.
