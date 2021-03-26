@@ -1,31 +1,29 @@
 package com.example.finapp.recycler;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.finapp.Network;
 import com.example.finapp.R;
 import com.example.finapp.StockRecord;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class RecyclerViewAdapter extends RecyclerAdapter {
-    private static final String dateFormatString = "HH:mm dd LLLL";
     private Resources res;
     private List<StockRecord> dataset;
-    private SimpleDateFormat dateFormat;
+    private Context context;
 
-    public RecyclerViewAdapter(RecyclerView recyclerView, List<StockRecord> dataset) {
+    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, List<StockRecord> dataset) {
         super(recyclerView);
         itemLayout = R.layout.fragment_stock;
         res = recyclerView.getResources();
-
+        this.context = context;
         this.dataset = dataset;
-        dateFormat = new SimpleDateFormat(dateFormatString, Locale.getDefault());
     }
 
     @Override
@@ -47,12 +45,7 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
 
         // Icon
         ImageView iconImage = item.findViewById(R.id.icon);
-
-        // Only for last element
-//        if (position == getItemCount() - 1)
-//            item.findViewById(R.id.recycler_divider).setVisibility(View.GONE);
-
-//        fadeAddAnimate(item, position % StockFragment.numberPerLoad);
+        Network.setImage(context, iconImage, log.getCompanyTicket());
     }
 
     @Override

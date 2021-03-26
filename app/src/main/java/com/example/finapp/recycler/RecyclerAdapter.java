@@ -45,7 +45,8 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
 
     /**
      * Fill recycler item with your content here.
-     * @param item Item to be filled.
+     *
+     * @param item     Item to be filled.
      * @param position Index of item in recycler view.
      */
     abstract void fillItemWithData(ViewGroup item, int position);
