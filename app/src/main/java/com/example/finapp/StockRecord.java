@@ -1,16 +1,23 @@
 package com.example.finapp;
 
+import yahoofinance.Stock;
+
 public class StockRecord {
     private String companyName;
     private String companyTicket;
     private String price;
     private String difference;
 
-    public StockRecord(String companyName, String companyTicket, String price, String difference) {
-        this.companyName = companyName;
-        this.companyTicket = companyTicket;
-        this.price = price;
-        this.difference = difference;
+    public StockRecord(Stock stock) {
+        try {
+            this.companyName = stock.getName();
+            this.companyTicket = stock.getSymbol();
+            this.price = stock.getQuote().getPrice().toString() + " " + stock.getCurrency();
+            this.difference = stock.getQuote().getChange() + " (" + stock.getQuote().getChangeInPercent() + "%)";
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getCompanyName() {

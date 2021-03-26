@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.MainActivity;
+import com.example.finapp.Network;
 import com.example.finapp.R;
 import com.example.finapp.StockRecord;
 import com.example.finapp.recycler.RecyclerAdapter;
@@ -32,7 +33,6 @@ public class FragmentOne extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerAdapter adapter;
 
-    private List<StockRecord> logRecords;
     private int loadedNumber;
     private boolean isLoading;
 
@@ -60,6 +60,8 @@ public class FragmentOne extends Fragment {
         emptyView = layout.findViewById(R.id.empty_view);
         recyclerView = layout.findViewById(R.id.recycler);
 
+        setupRecyclerView();
+
         return layout;
     }
 
@@ -76,8 +78,7 @@ public class FragmentOne extends Fragment {
         layoutManager.setItemPrefetchEnabled(false);
 
         recyclerView.setLayoutManager(layoutManager);
-        logRecords = new ArrayList<>();
-        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, logRecords);
+        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, Network.stocks);
         recyclerView.setAdapter(adapter);
     }
 }
