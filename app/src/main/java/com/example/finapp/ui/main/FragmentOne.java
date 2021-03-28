@@ -21,13 +21,14 @@ import yahoofinance.YahooFinance;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentOne extends Fragment {
-    public static final int numberPerLoad = 20;
+    public static final int numberPerLoad = 10;
 
     private View emptyView;
     private RecyclerView recyclerView;
@@ -56,29 +57,32 @@ public class FragmentOne extends Fragment {
         if (parentingActivity == null && container.getContext() instanceof MainActivity)
             parentingActivity = (MainActivity) container.getContext();
 
-        // Find views by ids
         emptyView = layout.findViewById(R.id.empty_view);
         recyclerView = layout.findViewById(R.id.recycler);
 
         setupRecyclerView();
-
+        new Handler().postDelayed(this::loadMoreRecords, 100);
         return layout;
     }
 
     private void setupRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext()) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         layoutManager.setStackFromEnd(false);
         layoutManager.setReverseLayout(false);
         layoutManager.setItemPrefetchEnabled(false);
 
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, Network.stocks);
+        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, new LinkedList<>());
         recyclerView.setAdapter(adapter);
+    }
+
+    private void loadMoreRecords() {
+        if (isLoading) return;
+        isLoading = true;
+
+        Network.loadMoreStocks(numberPerLoad);
+        adapter.notifyDataSetChanged();
+        isLoading = false;
     }
 }

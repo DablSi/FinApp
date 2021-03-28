@@ -11,14 +11,15 @@ import com.example.finapp.R;
 import com.example.finapp.StockRecord;
 
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerAdapter {
     private Resources res;
-    private List<StockRecord> dataset;
+    public static LinkedList<StockRecord> dataset;
     private Context context;
 
-    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, List<StockRecord> dataset) {
+    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset) {
         super(recyclerView);
         itemLayout = R.layout.fragment_stock;
         res = recyclerView.getResources();
@@ -50,6 +51,7 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
 
     @Override
     public int getItemCount() {
+        if (dataset == null) return 0;
         return dataset.size();
     }
 }

@@ -18,6 +18,11 @@ public class Toolbox {
      * @return Last child {@link View} or null if parent has no children.
      */
 
+    private static final String LOG_TAG = "CAREPHONE";
+    private static final boolean DOLOG = true;
+
+    private static final String PREFS_IS_FIRST_LAUNCH = "is_first_launch";
+
     @Nullable
     public static View getLastChild(@NonNull ViewGroup parent) {
         for (int i = parent.getChildCount() - 1; i >= 0; i--) {
@@ -28,4 +33,20 @@ public class Toolbox {
         return null;
     }
 
+    // Several general callbacks
+
+    public interface Callback {
+        void invoke();
+    }
+    public interface CallbackOne<T> {
+        void invoke(T arg);
+    }
+    public interface CallbackState {
+        void invoke();
+        void fail();
+    }
+    public interface CallbackStateOne<T> {
+        void invoke(T arg);
+        void fail();
+    }
 }

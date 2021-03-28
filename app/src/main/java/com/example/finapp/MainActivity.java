@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
 
-        Network.updateStocksList();
-
         NestedScrollView scrollView = findViewById(R.id.nest_scrollview);
         scrollView.setFillViewport(true);
 
