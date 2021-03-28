@@ -10,6 +10,7 @@ import com.example.finapp.Network;
 import com.example.finapp.R;
 import com.example.finapp.StockRecord;
 import com.example.finapp.ui.main.FragmentOne;
+import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -32,6 +33,10 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
     void fillItemWithData(ViewGroup item, int position) {
         StockRecord log = dataset.get(position);
 
+        MaterialCardView cardView = item.findViewById(R.id.materialCardView);
+        if (position % 2 != 0)
+            cardView.setCardBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+
         // TextViews
         String companyTicket = log.getCompanyTicket();
         ((TextView) item.findViewById(R.id.ticket)).setText(companyTicket);
@@ -43,11 +48,26 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         ((TextView) item.findViewById(R.id.price)).setText(price);
 
         String diff = log.getDifference();
-        ((TextView) item.findViewById(R.id.diff)).setText(diff);
+        TextView diffView = (TextView) item.findViewById(R.id.diff);
+        try {
+            if (diff.charAt(0) == '-')
+                diffView.setTextColor(context.getResources().getColor(R.color.negative));
+            else {
+                diff = "+" + diff;
+                diffView.setTextColor(context.getResources().getColor(R.color.positive));
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        diffView.setText(diff);
 
         // Icon
         ImageView iconImage = item.findViewById(R.id.icon);
         Network.setImage(context, iconImage, log.getCompanyTicket());
+
+        ImageView imageViewIcon = (ImageView) item.findViewById(R.id.star);
+        if (log.isFavorite())
+            imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
 
         fadeAddAnimate(item, position % FragmentOne.numberPerLoad);
     }

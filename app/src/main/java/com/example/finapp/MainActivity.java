@@ -3,6 +3,7 @@ package com.example.finapp;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView tabTextView = new TextView(this);
                 tab.setCustomView(tabTextView);
                 tabTextView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                tabTextView.setTypeface(Typeface.DEFAULT_BOLD);
                 tabTextView.setText(tab.getText());
                 tabTextView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
                 if (i == 0) {

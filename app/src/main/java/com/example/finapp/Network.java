@@ -19,6 +19,7 @@ public class Network {
     private static final String[] symbols = new String[]{"INTC", "BABA", "TSLA", "AIR.PA", "QS", "SPRT", "RLX", "TKAT", "BNTC", "YVR", "JFIN", "ODT", "UPST", "CAN", "AMTX", "GME", "BTC-USD", "ORMP", "IONS", "ZEAL.CO", "BIDU", "SBRA", "MARA", "VOLV-B.ST", "SPFR", "MIOTA-USD", "NUAN", "ETH-USD", "KPN.AS", "APPN", "IO", "HIMX", "BTC-EUR", "BRQS", "VWAGY", "RUN", "TWST", "XRP-USD", "MYSZ", "IMTE", "TIGR", "OCG", "ZEAL", "JD", "A17U.SI", "DNMR", "FUTU", "MSFT", "DFIFF", "ATOS", "RIOT", "0175.HK", "TKC", "STON", "BTC-GBP", "HCMC", "CLPS", "C31.SI", "DOCU", "UVXY", "DT", "SOS", "DOYU", "TRIP", "REGN", "LKNCY", "ZI", "PAH3.DE", "AMC", "RTY=F", "PING", "DADA", "RACE", "AVEO", "RACE.MI", "AZN", "DNORD.CO", "AMRS", "VIAC", "BOX", "APPS", "BOXL", "^GSPC", "SHIP", "3690.HK", "ETH-EUR", "BILI", "ICBP.JK", "DIXON.NS", "CSCO", "SPWR", "JBLU", "PBW", "^VIX", "VWAPY", "ADBE", "^HSI", "UNP", "AUDUSD=X", "NMTR", "WKEY", "LIZI", "SNAP", "ORSTED.CO", "VXX", "NOVO-B.CO", "EBON", "2LY.F", "FTCV", "^IXIC", "W", "BTC-CAD", "AYRO", "PDD", "MAERSK-B.CO", "1024.HK", "XRP-EUR", "RUB=X", "AC.TO", "WATT", "NEL.OL", "ROG.SW", "M", "ADA-USD", "CLSK", "NPA", "FTFT", "BYND", "VOW3.DE", "MRVL", "TZA", "PLL", "HITI.V", "SPY", "DMTK", "BNB-USD", "CIIC", "C38U.SI", "TCEHY", "MSTR", "ASML.AS", "BBBY", "WWR", "DVAX", "AVGR", "GBPUSD=X", "RIG", "C6L.SI", "HITIF", "BAYN.DE", "CURI", "DQ", "CVAC", "^OMX", "PM", "AMAT", "SAP.DE", "APXT", "ETH-CAD", "SQQQ", "TOT", "NQ=F", "NCTY", "SRAC", "WISH", "TME", "ACB", "EURUSD=X", "CAT", "0388.HK", "ARB.L", "0700.HK", "LINK-USD", "RBLX", "SMH", "ITP", "IQQH.DE", "LULU", "GBPHKD=X", "TSNPD"};
     static String url = "https://finnhub.io/api/logo?symbol=";
     private static File cacheDir;
+    private static File cacheFavDir;
 
     public static void updateStocksList(LinkedList<StockRecord> dataset) {
         if (dataset == null) dataset = new LinkedList<>();
@@ -104,9 +105,13 @@ public class Network {
         return out[0];
     }
 
-    public static void writeToCache(LinkedList<StockRecord> dataset) {
+    public static void writeToCache(LinkedList<StockRecord> dataset, boolean fav) {
         try {
-            ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(cacheDir));
+            File dir;
+            if (fav) dir = cacheFavDir;
+            else dir = cacheDir;
+
+            ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(dir));
             oo.writeObject(dataset);
             oo.close();
         } catch (Exception ioe) {
@@ -114,13 +119,20 @@ public class Network {
         }
     }
 
-    public static void readFromCache(Context context, RecyclerViewAdapter adapter) {
+    public static void readFromCache(Context context, RecyclerViewAdapter adapter, boolean fav) {
         try {
             cacheDir = new File(context.getFilesDir().getPath().toString() + "/save.ser");
-            if (!cacheDir.exists())
+            cacheFavDir = new File(context.getFilesDir().getPath().toString() + "/saveFav.ser");
+            if (!cacheDir.exists()) {
                 cacheDir.createNewFile();
+                cacheFavDir.createNewFile();
+            }
 
-            ObjectInputStream oi = new ObjectInputStream(new FileInputStream(cacheDir));
+            File dir;
+            if (fav) dir = cacheFavDir;
+            else dir = cacheDir;
+
+            ObjectInputStream oi = new ObjectInputStream(new FileInputStream(dir));
             Object cached = oi.readObject();
             adapter.dataset = (LinkedList<StockRecord>) cached;
             oi.close();

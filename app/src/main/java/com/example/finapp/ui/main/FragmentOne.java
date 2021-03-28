@@ -83,7 +83,7 @@ public class FragmentOne extends Fragment {
         if (isLoading) return;
         isLoading = true;
 
-        Network.readFromCache(parentingActivity, adapter);
+        Network.readFromCache(parentingActivity, adapter, false);
         adapter.notifyDataSetChanged();
         isLoading = false;
 
@@ -93,6 +93,6 @@ public class FragmentOne extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        Network.writeToCache(adapter.dataset);
+        Network.writeToCache(adapter.dataset, false);
     }
 }

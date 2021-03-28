@@ -8,4 +8,7 @@
     <color name="colorPrimaryText">#1A1A1A</color>
     <color name="colorSecondaryText">#BABABA</color>
     <color name="cardBackground">#F0F4F7</color>
+    <color name="star">#ffcb15</color>
+    <color name="positive">#1fb45d</color>
+    <color name="negative">#b31f1f</color>
 </resources>
