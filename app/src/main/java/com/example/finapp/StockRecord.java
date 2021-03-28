@@ -4,7 +4,7 @@ import yahoofinance.Stock;
 
 import java.io.Serializable;
 
-public class StockRecord implements Serializable {
+public class StockRecord implements Serializable{
     private String companyName;
     private String companyTicket;
     private String price;
@@ -22,6 +22,14 @@ public class StockRecord implements Serializable {
         catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    public StockRecord(StockRecord other){
+        this.companyName = other.getCompanyName();
+        this.companyTicket = other.getCompanyTicket();
+        this.price = other.getPrice();
+        this.difference = other.getDifference();
+        this.favorite = other.isFavorite();
     }
 
     public String getCompanyName() {

@@ -2,19 +2,21 @@ package com.example.finapp.recycler;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.Network;
 import com.example.finapp.R;
 import com.example.finapp.StockRecord;
-import com.example.finapp.ui.main.FragmentOne;
+import com.example.finapp.Toolbox;
+import com.example.finapp.ui.main.StocksFragment;
+import com.example.finapp.ui.main.FavouriteFragment;
 import com.google.android.material.card.MaterialCardView;
 
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
-import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerAdapter {
     private Resources res;
@@ -65,11 +67,36 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         ImageView iconImage = item.findViewById(R.id.icon);
         Network.setImage(context, iconImage, log.getCompanyTicket());
 
-        ImageView imageViewIcon = (ImageView) item.findViewById(R.id.star);
+        ImageButton imageViewIcon = item.findViewById(R.id.star);
         if (log.isFavorite())
             imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
+        imageViewIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    StockRecord newLog = new StockRecord(log);
+                    newLog.setFavorite(!log.isFavorite());
+                    int position = Toolbox.findStock(StocksFragment.adapter.dataset, companyTicket);
+                    StocksFragment.adapter.dataset.set(position, newLog);
+                    if (newLog.isFavorite()) {
+                        imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
+                        FavouriteFragment.adapter.dataset.add(newLog);
+                        int size = FavouriteFragment.adapter.dataset.size();
+                        FavouriteFragment.adapter.notifyDataSetChanged();
+                    } else {
+                        imageViewIcon.setColorFilter(context.getResources().getColor(R.color.badStar));
+                        int pos = Toolbox.findStock(FavouriteFragment.adapter.dataset, companyTicket);
+                        FavouriteFragment.adapter.dataset.remove(pos);
+                        FavouriteFragment.adapter.notifyDataSetChanged();
+                    }
+                    StocksFragment.adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        fadeAddAnimate(item, position % FragmentOne.numberPerLoad);
+        fadeAddAnimate(item, position % StocksFragment.numberPerLoad);
     }
 
     @Override

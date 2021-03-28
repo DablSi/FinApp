@@ -11,4 +11,5 @@
     <color name="star">#ffcb15</color>
     <color name="positive">#1fb45d</color>
     <color name="negative">#b31f1f</color>
+    <color name="badStar">#bbbbbb</color>
 </resources>

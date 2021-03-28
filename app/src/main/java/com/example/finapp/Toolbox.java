@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.LinkedList;
+
 /**
  * This class contains all kinds of tools
  * that could be useful during development.
@@ -31,6 +33,14 @@ public class Toolbox {
             if (child != null) return child;
         }
         return null;
+    }
+
+    public static int findStock(LinkedList<StockRecord> linkedList, String ticker) {
+        for (int i = 0; i < linkedList.size(); i++) {
+            if (linkedList.get(i).getCompanyTicket().equals(ticker))
+                return i;
+        }
+        return -1;
     }
 
     // Several general callbacks

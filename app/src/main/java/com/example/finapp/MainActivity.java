@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.appcompat.widget.SearchView;
@@ -13,25 +12,15 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.example.finapp.ui.main.FragmentOne;
-import com.example.finapp.ui.main.FragmentTwo;
+import com.example.finapp.ui.main.StocksFragment;
+import com.example.finapp.ui.main.FavouriteFragment;
 import com.example.finapp.ui.main.SectionsPagerAdapter;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         scrollView.setFillViewport(true);
 
         List<Class> fragmentTypes = new ArrayList<Class>() {{
-            add(FragmentOne.class);
-            add(FragmentTwo.class);
+            add(StocksFragment.class);
+            add(FavouriteFragment.class);
         }};
 
         FragmentPagerAdapter adapter =

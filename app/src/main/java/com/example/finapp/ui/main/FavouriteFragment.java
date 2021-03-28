@@ -19,12 +19,12 @@ import java.util.LinkedList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentOne extends Fragment {
+public class FavouriteFragment extends Fragment {
     public static final int numberPerLoad = 15;
 
     private View emptyView;
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter adapter;
+    public static RecyclerViewAdapter adapter;
 
     private int loadedNumber;
     private boolean isLoading;
@@ -32,10 +32,10 @@ public class FragmentOne extends Fragment {
     private MainActivity parentingActivity;
 
     // Required public constructor
-    public FragmentOne() {
+    public FavouriteFragment() {
     }
 
-    public FragmentOne(MainActivity parentingActivity) {
+    public FavouriteFragment(MainActivity parentingActivity) {
         this.parentingActivity = parentingActivity;
     }
 
@@ -52,7 +52,6 @@ public class FragmentOne extends Fragment {
         recyclerView = layout.findViewById(R.id.recycler);
         recyclerView.setNestedScrollingEnabled(false);
 
-        ((StockScrollView) layout.findViewById(R.id.scroll_layout)).setBottomCallback(this::loadMoreRecords);
         setupRecyclerView();
         new Handler().postDelayed(this::getCache, 100);
         return layout;
@@ -70,29 +69,18 @@ public class FragmentOne extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void loadMoreRecords() {
-        if (isLoading) return;
-        isLoading = true;
-
-        if (Network.loadMoreStocks(numberPerLoad, adapter.dataset))
-            adapter.notifyItemRangeInserted(adapter.dataset.size() - numberPerLoad, adapter.dataset.size());
-        isLoading = false;
-    }
-
     private void getCache() {
         if (isLoading) return;
         isLoading = true;
 
-        Network.readFromCache(parentingActivity, adapter, false);
+        Network.readFromCache(parentingActivity, adapter, true);
         adapter.notifyDataSetChanged();
         isLoading = false;
-
-        if (adapter.dataset.size() == 0) new Handler().postDelayed(this::loadMoreRecords, 100);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Network.writeToCache(adapter.dataset, false);
+        Network.writeToCache(adapter.dataset, true);
     }
 }
