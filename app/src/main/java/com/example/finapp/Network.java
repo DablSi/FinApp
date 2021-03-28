@@ -50,7 +50,7 @@ public class Network {
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-
+                        Log.v("Caching", "Downloaded from cache successfully");
                     }
 
                     @Override
@@ -61,7 +61,7 @@ public class Network {
                                 .into(imageView, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
+                                        Log.v("Caching", "Downloaded from internet successfully");
                                     }
 
                                     @Override
