@@ -1,2 +1,2 @@
 # FinApp
- Financial app for Yandex School
+ Financial app
