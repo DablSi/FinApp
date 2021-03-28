@@ -2,19 +2,22 @@ package com.example.finapp;
 
 import yahoofinance.Stock;
 
-public class StockRecord {
+import java.io.Serializable;
+
+public class StockRecord implements Serializable {
     private String companyName;
     private String companyTicket;
     private String price;
     private String difference;
     private boolean favorite;
 
-    public StockRecord(Stock stock) {
+    public StockRecord(Stock stock, boolean favorite) {
         try {
             this.companyName = stock.getName();
             this.companyTicket = stock.getSymbol();
             this.price = stock.getQuote().getPrice().toString() + " " + stock.getCurrency();
             this.difference = stock.getQuote().getChange() + " (" + stock.getQuote().getChangeInPercent() + "%)";
+            this.favorite = favorite;
         }
         catch (NullPointerException e) {
             e.printStackTrace();

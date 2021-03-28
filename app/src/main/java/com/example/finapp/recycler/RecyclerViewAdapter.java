@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.Network;
 import com.example.finapp.R;
 import com.example.finapp.StockRecord;
+import com.example.finapp.ui.main.FragmentOne;
 
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerAdapter {
     private Resources res;
-    public static LinkedList<StockRecord> dataset;
+    public LinkedList<StockRecord> dataset;
     private Context context;
 
     public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset) {
@@ -47,6 +48,8 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         // Icon
         ImageView iconImage = item.findViewById(R.id.icon);
         Network.setImage(context, iconImage, log.getCompanyTicket());
+
+        fadeAddAnimate(item, position % FragmentOne.numberPerLoad);
     }
 
     @Override

@@ -5,25 +5,16 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.MainActivity;
 import com.example.finapp.Network;
 import com.example.finapp.R;
-import com.example.finapp.StockRecord;
-import com.example.finapp.recycler.RecyclerAdapter;
 import com.example.finapp.recycler.RecyclerViewAdapter;
 import com.example.finapp.recycler.StockScrollView;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +24,7 @@ public class FragmentOne extends Fragment {
 
     private View emptyView;
     private RecyclerView recyclerView;
-    private RecyclerAdapter adapter;
+    private RecyclerViewAdapter adapter;
 
     private int loadedNumber;
     private boolean isLoading;
@@ -63,7 +54,7 @@ public class FragmentOne extends Fragment {
 
         ((StockScrollView) layout.findViewById(R.id.scroll_layout)).setBottomCallback(this::loadMoreRecords);
         setupRecyclerView();
-        new Handler().postDelayed(this::loadMoreRecords, 100);
+        new Handler().postDelayed(this::getCache, 100);
         return layout;
     }
 
@@ -83,8 +74,25 @@ public class FragmentOne extends Fragment {
         if (isLoading) return;
         isLoading = true;
 
-        Network.loadMoreStocks(numberPerLoad);
+        Network.loadMoreStocks(numberPerLoad, adapter.dataset);
+        adapter.notifyItemRangeInserted(adapter.dataset.size() - numberPerLoad, adapter.dataset.size());
+        isLoading = false;
+    }
+
+    private void getCache() {
+        if (isLoading) return;
+        isLoading = true;
+
+        Network.readFromCache(parentingActivity, adapter);
         adapter.notifyDataSetChanged();
         isLoading = false;
+
+        if (adapter.dataset.size() == 0) new Handler().postDelayed(this::loadMoreRecords, 100);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Network.writeToCache(adapter.dataset);
     }
 }
