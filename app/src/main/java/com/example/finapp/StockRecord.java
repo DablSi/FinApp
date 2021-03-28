@@ -7,6 +7,7 @@ public class StockRecord {
     private String companyTicket;
     private String price;
     private String difference;
+    private boolean favorite;
 
     public StockRecord(Stock stock) {
         try {
@@ -50,5 +51,13 @@ public class StockRecord {
 
     public void setDifference(String difference) {
         this.difference = difference;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

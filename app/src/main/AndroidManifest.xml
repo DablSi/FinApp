@@ -3,6 +3,8 @@
           package="com.example.finapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
 
     <application
             android:allowBackup="true"
@@ -10,6 +12,7 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
+            android:name=".FinApplication"
             android:theme="@style/AppTheme">
         <activity
                 android:name=".MainActivity"

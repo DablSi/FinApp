@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
 import com.example.finapp.recycler.RecyclerViewAdapter;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
@@ -44,7 +46,31 @@ public class Network {
     public static void setImage(Context context, ImageView imageView, String ticker) {
         Picasso.with(context)
                 .load(url + ticker)
-                .into(imageView);
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //Try again online if cache failed
+                        Picasso.with(context)
+                                .load(url + ticker)
+                                .into(imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
+                    }
+                });
     }
 
     public static void loadMoreStocks(int numberPerLoad) {

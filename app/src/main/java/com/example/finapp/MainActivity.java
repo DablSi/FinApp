@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
