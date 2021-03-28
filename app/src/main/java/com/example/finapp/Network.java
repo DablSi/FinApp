@@ -74,10 +74,11 @@ public class Network {
                 });
     }
 
-    public static void loadMoreStocks(int numberPerLoad, LinkedList<StockRecord> dataset) {
+    public static boolean loadMoreStocks(int numberPerLoad, LinkedList<StockRecord> dataset) {
         if (dataset == null) dataset = new LinkedList<>();
 
         LinkedList<StockRecord> finalDataset = dataset;
+        final boolean[] out = {true};
         Runnable runnable = new Runnable() {
             public void run() {
                 int size = finalDataset.size();
@@ -89,6 +90,7 @@ public class Network {
                         Log.e("Network", symbols[i] + " is missing");
                     }
                 }
+                if (finalDataset.size() == size) out[0] = false;
             }
         };
         Thread thread = new Thread(runnable);
@@ -99,6 +101,7 @@ public class Network {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return out[0];
     }
 
     public static void writeToCache(LinkedList<StockRecord> dataset) {

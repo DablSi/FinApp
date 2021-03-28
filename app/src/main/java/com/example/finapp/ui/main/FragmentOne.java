@@ -74,8 +74,8 @@ public class FragmentOne extends Fragment {
         if (isLoading) return;
         isLoading = true;
 
-        Network.loadMoreStocks(numberPerLoad, adapter.dataset);
-        adapter.notifyItemRangeInserted(adapter.dataset.size() - numberPerLoad, adapter.dataset.size());
+        if (Network.loadMoreStocks(numberPerLoad, adapter.dataset))
+            adapter.notifyItemRangeInserted(adapter.dataset.size() - numberPerLoad, adapter.dataset.size());
         isLoading = false;
     }
 
