@@ -15,6 +15,7 @@ import com.example.finapp.R;
 import com.example.finapp.StockRecord;
 import com.example.finapp.recycler.RecyclerAdapter;
 import com.example.finapp.recycler.RecyclerViewAdapter;
+import com.example.finapp.recycler.StockScrollView;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
@@ -28,7 +29,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentOne extends Fragment {
-    public static final int numberPerLoad = 10;
+    public static final int numberPerLoad = 15;
 
     private View emptyView;
     private RecyclerView recyclerView;
@@ -57,9 +58,10 @@ public class FragmentOne extends Fragment {
         if (parentingActivity == null && container.getContext() instanceof MainActivity)
             parentingActivity = (MainActivity) container.getContext();
 
-        emptyView = layout.findViewById(R.id.empty_view);
         recyclerView = layout.findViewById(R.id.recycler);
+        recyclerView.setNestedScrollingEnabled(false);
 
+        ((StockScrollView) layout.findViewById(R.id.scroll_layout)).setBottomCallback(this::loadMoreRecords);
         setupRecyclerView();
         new Handler().postDelayed(this::loadMoreRecords, 100);
         return layout;
