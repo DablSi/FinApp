@@ -1,6 +1,8 @@
 package com.example.finapp;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -40,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
         setPager();
 
-        activityMainBinding.search.setActivated(true);
-        activityMainBinding.search.setQueryHint("Find company or ticker");
-        activityMainBinding.search.onActionViewExpanded();
-        activityMainBinding.search.setIconified(false);
-        activityMainBinding.search.clearFocus();
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = findViewById(R.id.search);
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
 
-        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -54,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-                // StocksFragment.adapter.getFilter().filter(newText);
-
+                StocksFragment.adapter.getFilter().filter(newText);
+                FavouriteFragment.adapter.getFilter().filter(newText);
                 return false;
             }
         });

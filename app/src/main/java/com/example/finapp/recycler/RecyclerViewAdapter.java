@@ -23,8 +23,8 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
     public LinkedList<StockRecord> dataset;
     private Context context;
 
-    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset) {
-        super(recyclerView);
+    public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset, boolean isFavourite) {
+        super(recyclerView, isFavourite);
         itemLayout = R.layout.fragment_stock;
         res = recyclerView.getResources();
         this.context = context;
@@ -98,8 +98,6 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
 
         fadeAddAnimate(item, position % StocksFragment.numberPerLoad);
     }
-
-
 
     @Override
     public int getItemCount() {

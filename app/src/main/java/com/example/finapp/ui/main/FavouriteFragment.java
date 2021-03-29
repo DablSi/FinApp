@@ -65,7 +65,7 @@ public class FavouriteFragment extends Fragment {
         layoutManager.setItemPrefetchEnabled(false);
 
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, new LinkedList<>());
+        adapter = new RecyclerViewAdapter(parentingActivity.getApplicationContext(), recyclerView, new LinkedList<>(), true);
         recyclerView.setAdapter(adapter);
     }
 

@@ -6,10 +6,18 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import android.widget.Filter;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.R;
+import com.example.finapp.StockRecord;
+import com.example.finapp.ui.main.FavouriteFragment;
+import com.example.finapp.ui.main.StocksFragment;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This is an extension of Recycler view adapter.
@@ -21,11 +29,13 @@ import com.example.finapp.R;
 public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.BasicViewHolder> {
     @LayoutRes
     int itemLayout;
-
+    LinkedList<StockRecord> stockList;
     private Context context;
+    private boolean isFavourite = false;
 
-    public RecyclerAdapter(RecyclerView recyclerView) {
+    public RecyclerAdapter(RecyclerView recyclerView, boolean isFavourite) {
         context = recyclerView.getContext();
+        this.isFavourite = isFavourite;
     }
 
     @NonNull
@@ -66,4 +76,56 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
         animation.setStartOffset(100 * position);
         view.startAnimation(animation);
     }
+
+    ValueFilter valueFilter;
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
+    }
+
+    private class ValueFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (isFavourite)
+                stockList = FavouriteFragment.adapter.dataset;
+            else
+                stockList = StocksFragment.adapter.dataset;
+
+            if (constraint != null && constraint.length() > 0) {
+                LinkedList<StockRecord> filterList = new LinkedList<StockRecord>();
+                for (int i = 0; i < stockList.size(); i++) {
+                    if ((stockList.get(i).getCompanyTicket().toLowerCase()).contains(constraint.toString().toLowerCase())) {
+                        filterList.add(stockList.get(i));
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = stockList.size();
+                results.values = stockList;
+            }
+            return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            if (isFavourite)
+                FavouriteFragment.adapter.dataset = (LinkedList<StockRecord>) results.values;
+            else StocksFragment.adapter.dataset = (LinkedList<StockRecord>) results.values;
+            notifyDataSetChanged();
+        }
+
+    }
+
 }
