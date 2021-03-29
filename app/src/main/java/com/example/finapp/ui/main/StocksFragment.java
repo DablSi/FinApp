@@ -74,8 +74,10 @@ public class StocksFragment extends Fragment {
         if (isLoading) return;
         isLoading = true;
 
-        if (Network.loadMoreStocks(numberPerLoad, adapter.dataset))
-            adapter.notifyItemRangeInserted(adapter.dataset.size() - numberPerLoad, adapter.dataset.size());
+        if (Network.loadMoreStocks(numberPerLoad, adapter.dataset)) {
+            adapter.filteredDataset = adapter.dataset;
+            adapter.getFilter().filter(MainActivity.query);
+        }
         isLoading = false;
     }
 
@@ -84,7 +86,8 @@ public class StocksFragment extends Fragment {
         isLoading = true;
 
         Network.readFromCache(parentingActivity, adapter, false);
-        adapter.notifyDataSetChanged();
+        adapter.filteredDataset = adapter.dataset;
+        adapter.getFilter().filter(MainActivity.query);
         isLoading = false;
 
         if (adapter.dataset.size() == 0) new Handler().postDelayed(this::loadMoreRecords, 100);

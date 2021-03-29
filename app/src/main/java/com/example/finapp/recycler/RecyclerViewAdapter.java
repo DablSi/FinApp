@@ -8,10 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.finapp.Network;
-import com.example.finapp.R;
-import com.example.finapp.StockRecord;
-import com.example.finapp.Toolbox;
+import com.example.finapp.*;
 import com.example.finapp.ui.main.StocksFragment;
 import com.example.finapp.ui.main.FavouriteFragment;
 import com.google.android.material.card.MaterialCardView;
@@ -21,6 +18,7 @@ import java.util.LinkedList;
 public class RecyclerViewAdapter extends RecyclerAdapter {
     private Resources res;
     public LinkedList<StockRecord> dataset;
+    public LinkedList<StockRecord> filteredDataset;
     private Context context;
 
     public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset, boolean isFavourite) {
@@ -33,7 +31,7 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
 
     @Override
     void fillItemWithData(ViewGroup item, int position) {
-        StockRecord log = dataset.get(position);
+        StockRecord log = filteredDataset.get(position);
 
         MaterialCardView cardView = item.findViewById(R.id.materialCardView);
         if (position % 2 != 0)
@@ -81,15 +79,14 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
                     if (newLog.isFavorite()) {
                         imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
                         FavouriteFragment.adapter.dataset.add(newLog);
-                        int size = FavouriteFragment.adapter.dataset.size();
-                        FavouriteFragment.adapter.notifyDataSetChanged();
                     } else {
                         imageViewIcon.setColorFilter(context.getResources().getColor(R.color.badStar));
                         int pos = Toolbox.findStock(FavouriteFragment.adapter.dataset, companyTicket);
                         FavouriteFragment.adapter.dataset.remove(pos);
-                        FavouriteFragment.adapter.notifyDataSetChanged();
                     }
-                    StocksFragment.adapter.notifyDataSetChanged();
+                    FavouriteFragment.adapter.filteredDataset = FavouriteFragment.adapter.dataset;
+                    StocksFragment.adapter.getFilter().filter(MainActivity.query);
+                    FavouriteFragment.adapter.getFilter().filter(MainActivity.query);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -101,7 +98,7 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
 
     @Override
     public int getItemCount() {
-        if (dataset == null) return 0;
-        return dataset.size();
+        if (filteredDataset == null) return 0;
+        return filteredDataset.size();
     }
 }

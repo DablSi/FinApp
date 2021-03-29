@@ -29,6 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
     ActivityMainBinding activityMainBinding;
+    public static String query = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +45,19 @@ public class MainActivity extends AppCompatActivity {
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = findViewById(R.id.search);
-        // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setIconifiedByDefault(false);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String newText) {
+                query = newText;
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                query = newText;
                 StocksFragment.adapter.getFilter().filter(newText);
                 FavouriteFragment.adapter.getFilter().filter(newText);
                 return false;
@@ -71,11 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentPagerAdapter adapter =
                 new SectionsPagerAdapter(getSupportFragmentManager(), fragmentTypes, this);
-        // Получаем ViewPager и устанавливаем в него адаптер
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
 
-        // Передаём ViewPager в TabLayout
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                     if (tabViewChild instanceof TextView) {
                         ((TextView) tabViewChild).setTextSize(18);
                         ((TextView) tabViewChild).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorSecondaryText));
-                        //tabViewChild.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                     }
                 }
             }

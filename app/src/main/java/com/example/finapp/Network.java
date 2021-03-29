@@ -130,7 +130,6 @@ public class Network {
             File dir;
             if (fav) dir = cacheFavDir;
             else dir = cacheDir;
-
             ObjectInputStream oi = new ObjectInputStream(new FileInputStream(dir));
             Object cached = oi.readObject();
             adapter.dataset = (LinkedList<StockRecord>) cached;

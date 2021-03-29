@@ -74,7 +74,8 @@ public class FavouriteFragment extends Fragment {
         isLoading = true;
 
         Network.readFromCache(parentingActivity, adapter, true);
-        adapter.notifyDataSetChanged();
+        adapter.filteredDataset = adapter.dataset;
+        adapter.getFilter().filter(MainActivity.query);
         isLoading = false;
     }
 

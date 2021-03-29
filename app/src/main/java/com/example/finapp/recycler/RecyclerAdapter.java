@@ -121,8 +121,8 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
             if (isFavourite)
-                FavouriteFragment.adapter.dataset = (LinkedList<StockRecord>) results.values;
-            else StocksFragment.adapter.dataset = (LinkedList<StockRecord>) results.values;
+                FavouriteFragment.adapter.filteredDataset = (LinkedList<StockRecord>) results.values;
+            else StocksFragment.adapter.filteredDataset = (LinkedList<StockRecord>) results.values;
             notifyDataSetChanged();
         }
 
