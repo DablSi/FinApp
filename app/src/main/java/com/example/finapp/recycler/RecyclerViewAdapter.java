@@ -99,6 +99,8 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         fadeAddAnimate(item, position % StocksFragment.numberPerLoad);
     }
 
+
+
     @Override
     public int getItemCount() {
         if (dataset == null) return 0;

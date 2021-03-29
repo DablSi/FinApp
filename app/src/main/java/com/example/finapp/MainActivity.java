@@ -1,24 +1,24 @@
 package com.example.finapp;
 
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import com.example.finapp.ui.main.StocksFragment;
+import com.example.finapp.databinding.ActivityMainBinding;
 import com.example.finapp.ui.main.FavouriteFragment;
 import com.example.finapp.ui.main.SectionsPagerAdapter;
+import com.example.finapp.ui.main.StocksFragment;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.View;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -26,22 +26,43 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public TabLayout tabLayout;
-
-    public static int dpToPx(int dp, Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        return Math.round((float) dp * density);
-    }
+    ActivityMainBinding activityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
 
         NestedScrollView scrollView = findViewById(R.id.nest_scrollview);
         scrollView.setFillViewport(true);
 
+        setPager();
+
+        activityMainBinding.search.setActivated(true);
+        activityMainBinding.search.setQueryHint("Find company or ticker");
+        activityMainBinding.search.onActionViewExpanded();
+        activityMainBinding.search.setIconified(false);
+        activityMainBinding.search.clearFocus();
+
+        activityMainBinding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                // StocksFragment.adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+    }
+
+    private void setPager() {
         List<Class> fragmentTypes = new ArrayList<Class>() {{
             add(StocksFragment.class);
             add(FavouriteFragment.class);
@@ -112,18 +133,10 @@ public class MainActivity extends AppCompatActivity {
                 onTabSelected(tab);
             }
         });
+    }
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = findViewById(R.id.search);
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            // doMySearch(query);
-        }
+    public static int dpToPx(int dp, Context context) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 }
