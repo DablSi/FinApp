@@ -1,9 +1,10 @@
 package com.example.finapp.recycler;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.core.widget.NestedScrollView;
-import com.example.finapp.Toolbox;
+import com.example.finapp.utils.Toolbox;
 
 public class StockScrollView extends NestedScrollView {
     private Toolbox.Callback bottomCallback;
@@ -27,9 +28,11 @@ public class StockScrollView extends NestedScrollView {
     public StockScrollView(Context context) {
         super(context);
     }
+
     public StockScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public StockScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }

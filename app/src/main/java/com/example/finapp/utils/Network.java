@@ -1,8 +1,9 @@
-package com.example.finapp;
+package com.example.finapp.utils;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
+import com.example.finapp.recycler.StockRecord;
 import com.example.finapp.recycler.RecyclerViewAdapter;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -18,7 +19,8 @@ public class Network {
     private static File cacheDir;
     private static File cacheFavDir;
 
-    public static void updateStocksList(LinkedList<StockRecord> dataset) {
+    // download all
+    public static void downloadStocksList(LinkedList<StockRecord> dataset) {
         if (dataset == null) dataset = new LinkedList<>();
 
         LinkedList<StockRecord> finalDataset = dataset;
@@ -114,7 +116,7 @@ public class Network {
             oo.writeObject(dataset);
             oo.close();
         } catch (Exception ioe) {
-            ioe.printStackTrace();
+            Log.e("Cache", "Couldn't write cache");
         }
     }
 
@@ -135,7 +137,7 @@ public class Network {
             adapter.dataset = (LinkedList<StockRecord>) cached;
             oi.close();
         } catch (Exception exc) {
-            exc.printStackTrace();
+            Log.e("Cache", "Couldn't read cache");
         }
     }
 }

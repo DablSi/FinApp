@@ -1,6 +1,7 @@
 package com.example.finapp.ui.main;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.finapp.R;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,7 +22,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
-    private List<Class> mFragmentTypes;
+    private final List<Class> mFragmentTypes;
 
     public SectionsPagerAdapter(
             FragmentManager fm,
@@ -41,6 +43,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return 0;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
 
@@ -59,7 +62,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             }
         }
 
-        return fragment;
+        return Objects.requireNonNull(fragment);
     }
 
     @Nullable

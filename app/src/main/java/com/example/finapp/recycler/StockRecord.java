@@ -1,10 +1,10 @@
-package com.example.finapp;
+package com.example.finapp.recycler;
 
 import yahoofinance.Stock;
 
 import java.io.Serializable;
 
-public class StockRecord implements Serializable{
+public class StockRecord implements Serializable {
     private String companyName;
     private String companyTicket;
     private String price;
@@ -18,13 +18,12 @@ public class StockRecord implements Serializable{
             this.price = stock.getQuote().getPrice().toString() + " " + stock.getCurrency();
             this.difference = stock.getQuote().getChange() + " (" + stock.getQuote().getChangeInPercent() + "%)";
             this.favorite = favorite;
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
-    public StockRecord(StockRecord other){
+    public StockRecord(StockRecord other) {
         this.companyName = other.getCompanyName();
         this.companyTicket = other.getCompanyTicket();
         this.price = other.getPrice();

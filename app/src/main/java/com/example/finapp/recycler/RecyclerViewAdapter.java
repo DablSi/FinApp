@@ -1,30 +1,29 @@
 package com.example.finapp.recycler;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.finapp.*;
-import com.example.finapp.ui.main.StocksFragment;
+import com.example.finapp.R;
 import com.example.finapp.ui.main.FavouriteFragment;
+import com.example.finapp.ui.main.MainActivity;
+import com.example.finapp.ui.main.StocksFragment;
+import com.example.finapp.utils.Network;
+import com.example.finapp.utils.Toolbox;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.LinkedList;
 
 public class RecyclerViewAdapter extends RecyclerAdapter {
-    private Resources res;
     public LinkedList<StockRecord> dataset;
     public LinkedList<StockRecord> filteredDataset;
-    private Context context;
+    private final Context context;
 
     public RecyclerViewAdapter(Context context, RecyclerView recyclerView, LinkedList<StockRecord> dataset, boolean isFavourite) {
         super(recyclerView, isFavourite);
         itemLayout = R.layout.fragment_stock;
-        res = recyclerView.getResources();
         this.context = context;
         this.dataset = dataset;
     }
@@ -48,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         ((TextView) item.findViewById(R.id.price)).setText(price);
 
         String diff = log.getDifference();
-        TextView diffView = (TextView) item.findViewById(R.id.diff);
+        TextView diffView = item.findViewById(R.id.diff);
         try {
             if (diff.charAt(0) == '-')
                 diffView.setTextColor(context.getResources().getColor(R.color.negative));
@@ -68,28 +67,25 @@ public class RecyclerViewAdapter extends RecyclerAdapter {
         ImageButton imageViewIcon = item.findViewById(R.id.star);
         if (log.isFavorite())
             imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
-        imageViewIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    StockRecord newLog = new StockRecord(log);
-                    newLog.setFavorite(!log.isFavorite());
-                    int position = Toolbox.findStock(StocksFragment.adapter.dataset, companyTicket);
-                    StocksFragment.adapter.dataset.set(position, newLog);
-                    if (newLog.isFavorite()) {
-                        imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
-                        FavouriteFragment.adapter.dataset.add(newLog);
-                    } else {
-                        imageViewIcon.setColorFilter(context.getResources().getColor(R.color.badStar));
-                        int pos = Toolbox.findStock(FavouriteFragment.adapter.dataset, companyTicket);
-                        FavouriteFragment.adapter.dataset.remove(pos);
-                    }
-                    FavouriteFragment.adapter.filteredDataset = FavouriteFragment.adapter.dataset;
-                    StocksFragment.adapter.getFilter().filter(MainActivity.query);
-                    FavouriteFragment.adapter.getFilter().filter(MainActivity.query);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        imageViewIcon.setOnClickListener(view -> {
+            try {
+                StockRecord newLog = new StockRecord(log);
+                newLog.setFavorite(!log.isFavorite());
+                int position1 = Toolbox.findStock(StocksFragment.adapter.dataset, companyTicket);
+                StocksFragment.adapter.dataset.set(position1, newLog);
+                if (newLog.isFavorite()) {
+                    imageViewIcon.setColorFilter(context.getResources().getColor(R.color.star));
+                    FavouriteFragment.adapter.dataset.add(newLog);
+                } else {
+                    imageViewIcon.setColorFilter(context.getResources().getColor(R.color.badStar));
+                    int pos = Toolbox.findStock(FavouriteFragment.adapter.dataset, companyTicket);
+                    FavouriteFragment.adapter.dataset.remove(pos);
                 }
+                FavouriteFragment.adapter.filteredDataset = FavouriteFragment.adapter.dataset;
+                StocksFragment.adapter.getFilter().filter(MainActivity.query);
+                FavouriteFragment.adapter.getFilter().filter(MainActivity.query);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 

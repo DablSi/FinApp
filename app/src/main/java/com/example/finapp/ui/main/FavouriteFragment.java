@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.finapp.MainActivity;
-import com.example.finapp.Network;
+import com.example.finapp.utils.Network;
 import com.example.finapp.R;
 import com.example.finapp.recycler.RecyclerViewAdapter;
-import com.example.finapp.recycler.StockScrollView;
 
 import java.util.LinkedList;
 
@@ -20,32 +18,20 @@ import java.util.LinkedList;
  * A simple {@link Fragment} subclass.
  */
 public class FavouriteFragment extends Fragment {
-    public static final int numberPerLoad = 15;
 
-    private View emptyView;
     private RecyclerView recyclerView;
     public static RecyclerViewAdapter adapter;
-
-    private int loadedNumber;
     private boolean isLoading;
-
     private MainActivity parentingActivity;
 
-    // Required public constructor
     public FavouriteFragment() {
-    }
-
-    public FavouriteFragment(MainActivity parentingActivity) {
-        this.parentingActivity = parentingActivity;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_main, container, false);
 
-        // Try to get parenting activity if not given
         if (parentingActivity == null && container.getContext() instanceof MainActivity)
             parentingActivity = (MainActivity) container.getContext();
 

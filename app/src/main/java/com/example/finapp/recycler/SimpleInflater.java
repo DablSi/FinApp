@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.example.finapp.Toolbox;
+import com.example.finapp.utils.Toolbox;
 
 /**
  * Simple wrapper class for {@link LayoutInflater}.
@@ -20,8 +20,8 @@ import com.example.finapp.Toolbox;
  * For single inflation use static implementations.
  */
 public class SimpleInflater {
-    private Context context;
-    private ViewGroup parent;
+    private final Context context;
+    private final ViewGroup parent;
 
     public SimpleInflater(Context context, ViewGroup parent) {
         this.context = context;
@@ -79,9 +79,9 @@ public class SimpleInflater {
     }
 
     private static class InflatingThread extends Thread {
-        private Handler handler;
-        private ViewGroup parent;
-        private int id;
+        private final Handler handler;
+        private final ViewGroup parent;
+        private final int id;
 
         @Override
         public void run() {
@@ -101,9 +101,9 @@ public class SimpleInflater {
     }
 
     private static class InflatedHandler extends Handler {
-        private OnViewInflated callback;
-        private ViewGroup parent;
-        private boolean attachToRoot;
+        private final OnViewInflated callback;
+        private final ViewGroup parent;
+        private final boolean attachToRoot;
 
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -128,6 +128,7 @@ public class SimpleInflater {
     public interface OnViewInflated {
         /**
          * Runs when view is successfully added to layout.
+         *
          * @param view View which was added to layout.
          */
         void inflated(View view);

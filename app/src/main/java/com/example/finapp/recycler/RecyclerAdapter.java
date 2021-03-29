@@ -11,13 +11,10 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.finapp.R;
-import com.example.finapp.StockRecord;
 import com.example.finapp.ui.main.FavouriteFragment;
 import com.example.finapp.ui.main.StocksFragment;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * This is an extension of Recycler view adapter.
@@ -30,8 +27,8 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
     @LayoutRes
     int itemLayout;
     LinkedList<StockRecord> stockList;
-    private Context context;
-    private boolean isFavourite = false;
+    private final Context context;
+    private final boolean isFavourite;
 
     public RecyclerAdapter(RecyclerView recyclerView, boolean isFavourite) {
         context = recyclerView.getContext();
@@ -67,13 +64,9 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
         }
     }
 
-    public interface OnRecyclerItemClick {
-        void onClick(int index);
-    }
-
     void fadeAddAnimate(View view, int position) {
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_in);
-        animation.setStartOffset(100 * position);
+        animation.setStartOffset(100L * position);
         view.startAnimation(animation);
     }
 
@@ -101,11 +94,11 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
                 stockList = StocksFragment.adapter.dataset;
 
             if (constraint != null && constraint.length() > 0) {
-                LinkedList<StockRecord> filterList = new LinkedList<StockRecord>();
-                for (int i = 0; i < stockList.size(); i++) {
-                    if ((stockList.get(i).getCompanyTicket().toLowerCase()).contains(constraint.toString().toLowerCase()) ||
-                            (stockList.get(i).getCompanyName().toLowerCase()).contains(constraint.toString().toLowerCase())) {
-                        filterList.add(stockList.get(i));
+                LinkedList<StockRecord> filterList = new LinkedList<>();
+                for (StockRecord stockRecord : stockList) {
+                    if ((stockRecord.getCompanyTicket().toLowerCase()).contains(constraint.toString().toLowerCase()) ||
+                            (stockRecord.getCompanyName().toLowerCase()).contains(constraint.toString().toLowerCase())) {
+                        filterList.add(stockRecord);
                     }
                 }
                 results.count = filterList.size();
