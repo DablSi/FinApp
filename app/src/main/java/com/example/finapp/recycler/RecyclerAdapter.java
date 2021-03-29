@@ -103,7 +103,8 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
             if (constraint != null && constraint.length() > 0) {
                 LinkedList<StockRecord> filterList = new LinkedList<StockRecord>();
                 for (int i = 0; i < stockList.size(); i++) {
-                    if ((stockList.get(i).getCompanyTicket().toLowerCase()).contains(constraint.toString().toLowerCase())) {
+                    if ((stockList.get(i).getCompanyTicket().toLowerCase()).contains(constraint.toString().toLowerCase()) ||
+                            (stockList.get(i).getCompanyName().toLowerCase()).contains(constraint.toString().toLowerCase())) {
                         filterList.add(stockList.get(i));
                     }
                 }
